@@ -19,6 +19,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import core.Task;
+import net.miginfocom.swing.MigLayout;
+import resources.Day;
+
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+import java.awt.FlowLayout;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class StudymeisterFONIS extends JFrame {
 
@@ -31,6 +40,9 @@ public class StudymeisterFONIS extends JFrame {
 	private int currentDay = new GregorianCalendar().get(Calendar.DAY_OF_WEEK) - 1;
 	//
 	private JPanel contentPane;
+	private JTextField txtCurrentDay;
+	private JTextField txtPagesDone;
+	private JTextField txtTotalPages;
 
 
 	public static void main(String[] args) {
@@ -48,12 +60,72 @@ public class StudymeisterFONIS extends JFrame {
 
 	
 	public StudymeisterFONIS() {
+		setTitle("StudymeisterFONIS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		
+		JPanel panel = new JPanel();
+		contentPane.add(panel, BorderLayout.WEST);
+		panel.setLayout(new MigLayout("", "[grow]", "[][][][][]"));
+		
+		JLabel lblUserName = new JLabel("Welcome, " + System.getProperty("user.name") + "!");
+		lblUserName.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblUserName.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(lblUserName, "cell 0 0,alignx center,aligny center");
+		
+		JLabel lblTodayIs = new JLabel("Today is : ");
+		lblTodayIs.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblTodayIs.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(lblTodayIs, "cell 0 2,alignx center,aligny center");
+		
+		txtCurrentDay = new JTextField();
+		txtCurrentDay.setEditable(false);
+		txtCurrentDay.setHorizontalAlignment(SwingConstants.CENTER);
+		txtCurrentDay.setText(Day.values()[currentDay].name());
+		panel.add(txtCurrentDay, "cell 0 3,growx,aligny center");
+		txtCurrentDay.setColumns(10);
+		
+		JLabel lblTaskSelection = new JLabel("TaskSelection");
+		panel.add(lblTaskSelection, "cell 0 4");
+		
+		JPanel panel_1 = new JPanel();
+		contentPane.add(panel_1, BorderLayout.SOUTH);
+		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		contentPane.add(scrollPane, BorderLayout.CENTER);
+		
+		JPanel panel_2 = new JPanel();
+		scrollPane.setRowHeaderView(panel_2);
+		panel_2.setLayout(new MigLayout("", "[grow]", "[][][][]"));
+		
+		JLabel lblPagesDone = new JLabel("Pages done");
+		panel_2.add(lblPagesDone, "cell 0 0");
+		
+		txtPagesDone = new JTextField();
+		txtPagesDone.setEditable(false);
+		panel_2.add(txtPagesDone, "cell 0 1,growx");
+		txtPagesDone.setColumns(10);
+		
+		JLabel lblTotalPages = new JLabel("Total pages");
+		panel_2.add(lblTotalPages, "cell 0 2");
+		
+		txtTotalPages = new JTextField();
+		txtTotalPages.setEditable(false);
+		panel_2.add(txtTotalPages, "cell 0 3,growx");
+		txtTotalPages.setColumns(10);
+		
+		JTextArea textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
+		
+		JLabel lblTaskname = new JLabel("TaskName");
+		scrollPane.setColumnHeaderView(lblTaskname);
+		if(tasks.size() == 0) lblTaskSelection.setText("No tasks for today!");
+		else lblTaskSelection.setText("Select a task: ");
 	}
 	
 	
