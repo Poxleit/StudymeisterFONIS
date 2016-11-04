@@ -28,6 +28,14 @@ import javax.swing.JTextField;
 import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ComboBoxEditor;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class StudymeisterFONIS extends JFrame {
 
@@ -43,6 +51,8 @@ public class StudymeisterFONIS extends JFrame {
 	private JTextField txtCurrentDay;
 	private JTextField txtPagesDone;
 	private JTextField txtTotalPages;
+	private JComboBox<String> comboBoxTasks;
+	private JLabel lblTaskSelection;
 
 
 	public static void main(String[] args) {
@@ -63,6 +73,37 @@ public class StudymeisterFONIS extends JFrame {
 		setTitle("StudymeisterFONIS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				save();
+			}
+		});
+		mnFile.add(mntmSave);
+		
+		JMenuItem mntmLoad = new JMenuItem("Load");
+		mntmLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				load();
+			}
+		});
+		mnFile.add(mntmLoad);
+		
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//TODO: Ask user to save, then exit
+				exit();
+			}
+		});
+		mnFile.add(mntmExit);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -70,7 +111,7 @@ public class StudymeisterFONIS extends JFrame {
 		
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.WEST);
-		panel.setLayout(new MigLayout("", "[grow]", "[][][][][]"));
+		panel.setLayout(new MigLayout("", "[grow]", "[][][][][][][][][]"));
 		
 		JLabel lblUserName = new JLabel("Welcome, " + System.getProperty("user.name") + "!");
 		lblUserName.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -89,8 +130,17 @@ public class StudymeisterFONIS extends JFrame {
 		panel.add(txtCurrentDay, "cell 0 3,growx,aligny center");
 		txtCurrentDay.setColumns(10);
 		
-		JLabel lblTaskSelection = new JLabel("TaskSelection");
-		panel.add(lblTaskSelection, "cell 0 4");
+		lblTaskSelection = new JLabel("No tasks for today!");
+		panel.add(lblTaskSelection, "cell 0 4,alignx center,aligny center");
+		
+		comboBoxTasks = new JComboBox<String>();
+		comboBoxTasks.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+		comboBoxTasks.setEnabled(false);
+		panel.add(comboBoxTasks, "cell 0 5,growx,aligny center");
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
@@ -120,12 +170,13 @@ public class StudymeisterFONIS extends JFrame {
 		txtTotalPages.setColumns(10);
 		
 		JTextArea textArea = new JTextArea();
+		textArea.setLineWrap(true);
 		scrollPane.setViewportView(textArea);
+		textArea.setWrapStyleWord(true);
 		
 		JLabel lblTaskname = new JLabel("TaskName");
 		scrollPane.setColumnHeaderView(lblTaskname);
-		if(tasks.size() == 0) lblTaskSelection.setText("No tasks for today!");
-		else lblTaskSelection.setText("Select a task: ");
+	
 	}
 	
 	
@@ -157,6 +208,29 @@ public class StudymeisterFONIS extends JFrame {
 			//Displays a message that no data about tasks was found.
 		}
 		listWasLoaded = true;
+	}
+	
+	private void listTasks(){
+		if(!tasks.isEmpty()){
+			boolean tasksForToday = false;
+			for(int i = 0; i < tasks.size(); i++){
+				if(tasks.get(i).getDay() == Day.values()[currentDay]){
+					comboBoxTasks.addItem(tasks.get(i).getTaskName());
+					tasksForToday = true;
+				}
+			}
+			if(tasksForToday){
+				lblTaskSelection.setText("Select a task: ");
+				comboBoxTasks.setEnabled(true);
+			}else{
+				lblTaskSelection.setText("No tasks for today!");
+				comboBoxTasks.setEnabled(false);
+			}
+		}
+	}
+	
+	private void exit() {
+		System.exit(0);
 	}
 
 }
