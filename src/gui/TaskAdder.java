@@ -81,7 +81,7 @@ public class TaskAdder extends JDialog {
 				JTextArea textArea = new JTextArea();
 				textArea.setLineWrap(true);
 				textArea.setWrapStyleWord(true);
-				scrollPane.setViewportView(textArea);
+				scrollPane.setRowHeaderView(textArea);
 			}
 		}
 	}
