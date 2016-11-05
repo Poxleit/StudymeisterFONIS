@@ -49,11 +49,22 @@ public class TaskAdder extends JDialog {
 					buttonPane.add(btnAddTask);
 					btnAddTask.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							//Task task = new Task(taskName, taskDescription, totalPages, taskDay);
 							String taskName = txtTaskName.getText();
 							String taskDescription = txtTaskDescription.getText();
 							int totalPages = Integer.parseInt(txtTotalPages.getText());
 							int taskDay = cbDays.getSelectedIndex();
+							//Test if the object already exists
+							boolean exists = false;
+							for(int i = 0; i < tasks.size(); i++){
+								if(tasks.get(i).getTaskName().equals(taskName)){
+									exists =  true;
+									return;
+								}
+							}
+							if(exists){
+								//Needs to display that the tasks already exists
+								return;
+							}
 							try {
 								Task task = new Task(taskName, taskDescription, totalPages, taskDay);
 								tasks.add(task);

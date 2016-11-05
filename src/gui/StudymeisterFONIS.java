@@ -44,6 +44,8 @@ public class StudymeisterFONIS extends JFrame {
 	private LinkedList<Task> tasks = new LinkedList<Task>();
 	private boolean listWasLoaded = false;
 	private int currentDay = new GregorianCalendar().get(Calendar.DAY_OF_WEEK) - 1;
+	private Task currentTask;
+	private String selectedTask;
 	//
 	private JPanel contentPane;
 	private JTextField txtCurrentDay;
@@ -51,6 +53,8 @@ public class StudymeisterFONIS extends JFrame {
 	private JTextField txtTotalPages;
 	private JComboBox<String> comboBoxTasks;
 	private JLabel lblTaskSelection;
+	private JLabel lblTaskname;
+	private JTextArea txtTaskDescription;
 
 
 	public static void main(String[] args) {
@@ -135,7 +139,15 @@ public class StudymeisterFONIS extends JFrame {
 		comboBoxTasks = new JComboBox<String>();
 		comboBoxTasks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				if(comboBoxTasks.getSelectedItem() != null){
+					selectedTask = comboBoxTasks.getSelectedItem().toString();
+				}
+				for(int i = 0; i < tasks.size(); i++){
+					if(tasks.get(i).getTaskName().equals(selectedTask)){
+						currentTask = tasks.get(i);
+					}
+				}
+				displayTask();
 			}
 		});
 		comboBoxTasks.setEnabled(false);
@@ -148,6 +160,15 @@ public class StudymeisterFONIS extends JFrame {
 				ta.setVisible(true);
 			}
 		});
+		
+		//#TESTCODE , to be removed
+		JButton btnTest = new JButton("test");
+		btnTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				listTasks();
+			}
+		});
+		panel.add(btnTest, "cell 0 7");
 		panel.add(btnAddTask, "cell 0 8,alignx center,aligny center");
 		
 		JPanel panel_1 = new JPanel();
@@ -177,12 +198,12 @@ public class StudymeisterFONIS extends JFrame {
 		panel_2.add(txtTotalPages, "cell 0 3,growx");
 		txtTotalPages.setColumns(10);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setLineWrap(true);
-		scrollPane.setViewportView(textArea);
-		textArea.setWrapStyleWord(true);
+		txtTaskDescription = new JTextArea();
+		txtTaskDescription.setLineWrap(true);
+		scrollPane.setViewportView(txtTaskDescription);
+		txtTaskDescription.setWrapStyleWord(true);
 		
-		JLabel lblTaskname = new JLabel("TaskName");
+		lblTaskname = new JLabel("TaskName");
 		scrollPane.setColumnHeaderView(lblTaskname);
 	
 	}
@@ -221,6 +242,9 @@ public class StudymeisterFONIS extends JFrame {
 	private void listTasks(){
 		if(!tasks.isEmpty()){
 			boolean tasksForToday = false;
+			comboBoxTasks.setEnabled(false);
+			comboBoxTasks.removeAllItems();
+			//Make it select previously selected item if cb already filled
 			for(int i = 0; i < tasks.size(); i++){
 				if(tasks.get(i).getDay() == Day.values()[currentDay]){
 					comboBoxTasks.addItem(tasks.get(i).getTaskName());
@@ -235,12 +259,15 @@ public class StudymeisterFONIS extends JFrame {
 				comboBoxTasks.setEnabled(false);
 			}
 		}else{
-			for(int i = 0; i < tasks.size(); i++){
-				for(int j = 0; j < tasks.size(); j++){
-					
-				}
-			}
+			
 		}
+	}
+	
+	private void displayTask(){
+		lblTaskname.setText(currentTask.getTaskName());
+		txtTaskDescription.setText(currentTask.getTaskDescription());
+		txtTotalPages.setText("" + currentTask.getTotalPages());
+		txtPagesDone.setText("" +currentTask.getPagesDone());
 	}
 	
 	private void exit() {
