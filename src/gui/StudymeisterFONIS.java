@@ -31,6 +31,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import core.Statistics;
 import core.Task;
 import net.miginfocom.swing.MigLayout;
 import resources.Day;
@@ -58,6 +59,7 @@ public class StudymeisterFONIS extends JFrame {
 	private JLabel lblTaskname;
 	private JTextArea txtTaskDescription;
 	private JButton btnFinishPage;
+	private JCheckBox chckbxStudying;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -169,10 +171,20 @@ public class StudymeisterFONIS extends JFrame {
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JCheckBox chckbxStudying = new JCheckBox("Studying");
+		chckbxStudying = new JCheckBox("Studying");
+		chckbxStudying.setEnabled(false);
 		chckbxStudying.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				studying();
+//				if(chckbxStudying.isSelected()){
+//					time.start();
+//					btnFinishPage.setEnabled(true);
+//				}else{
+//					time.pause();
+//					btnFinishPage.setEnabled(false);
+//					Statistics.totalTime += time.getTotalTime();
+//				}
+//				System.out.println(Statistics.totalTime + "\n" + Statistics.totalPages);
 			}
 		});
 		panel_1.add(chckbxStudying);
@@ -205,6 +217,7 @@ public class StudymeisterFONIS extends JFrame {
 		btnFinishPage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				currentTask.finishAPage();
+				Statistics.totalPages++;
 				txtPagesDone.setText("" + currentTask.getPagesDone());
 				if (currentTask.getPagesDone() == currentTask.getTotalPages()) {
 					// Display message and remove task from list
@@ -282,17 +295,23 @@ public class StudymeisterFONIS extends JFrame {
 			if (tasksForToday) {
 				lblTaskSelection.setText("Select a task: ");
 				comboBoxTasks.setEnabled(true);
-				btnFinishPage.setEnabled(true);
+				chckbxStudying.setEnabled(true);
 			} else {
 				lblTaskSelection.setText("No tasks for today!");
 				comboBoxTasks.setEnabled(false);
 				btnFinishPage.setEnabled(false);
+				chckbxStudying.setSelected(false);
+				studying();
+				chckbxStudying.setEnabled(false);
 			}
 		} else {
 			comboBoxTasks.removeAllItems();
 			lblTaskSelection.setText("No tasks for today!");
 			comboBoxTasks.setEnabled(false);
 			btnFinishPage.setEnabled(false);
+			chckbxStudying.setSelected(false);
+			studying();
+			chckbxStudying.setEnabled(false);
 			lblTaskname.setText("");
 			txtTaskDescription.setText("");
 			txtTotalPages.setText("");
@@ -305,6 +324,18 @@ public class StudymeisterFONIS extends JFrame {
 		txtTaskDescription.setText(currentTask.getTaskDescription());
 		txtTotalPages.setText("" + currentTask.getTotalPages());
 		txtPagesDone.setText("" + currentTask.getPagesDone());
+	}
+	
+	private void studying(){
+		if(chckbxStudying.isSelected()){
+			time.start();
+			btnFinishPage.setEnabled(true);
+		}else{
+			time.pause();
+			btnFinishPage.setEnabled(false);
+			Statistics.totalTime += time.getTotalTime();
+		}
+		System.out.println(Statistics.totalTime + "\n" + Statistics.totalPages);
 	}
 
 	private void exit() {
