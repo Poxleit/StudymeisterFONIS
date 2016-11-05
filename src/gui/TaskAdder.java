@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +29,7 @@ public class TaskAdder extends JDialog {
 	private JTextArea txtTaskDescription;
 	private JComboBox<Day> cbDays;
 
-	public TaskAdder(LinkedList<Task> tasks) {
+	public TaskAdder(LinkedList<Task> tasks, int currentDay) {
 		setTitle("StudymeisterFONIS - Task Adder");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -106,6 +107,7 @@ public class TaskAdder extends JDialog {
 				for(int i = 0; i < 7; i++){
 					cbDays.addItem(Day.values()[i]);
 				}
+				cbDays.setSelectedIndex(currentDay);
 			}
 		}
 		{
@@ -120,8 +122,10 @@ public class TaskAdder extends JDialog {
 				txtTaskDescription.setLineWrap(true);
 				txtTaskDescription.setWrapStyleWord(true);
 				scrollPane.setViewportView(txtTaskDescription);
+				
 			}
 		}
+		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 	}
 	
 	private void clearFieds(){

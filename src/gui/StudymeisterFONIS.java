@@ -144,7 +144,7 @@ public class StudymeisterFONIS extends JFrame {
 		JButton btnAddTask = new JButton("Add Task");
 		btnAddTask.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TaskAdder ta = new TaskAdder(tasks);
+				TaskAdder ta = new TaskAdder(tasks, currentDay);
 				ta.setVisible(true);
 			}
 		});
@@ -233,6 +233,12 @@ public class StudymeisterFONIS extends JFrame {
 			}else{
 				lblTaskSelection.setText("No tasks for today!");
 				comboBoxTasks.setEnabled(false);
+			}
+		}else{
+			for(int i = 0; i < tasks.size(); i++){
+				for(int j = 0; j < tasks.size(); j++){
+					
+				}
 			}
 		}
 	}
