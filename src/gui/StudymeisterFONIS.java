@@ -5,18 +5,13 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,8 +30,8 @@ import core.Statistics;
 import core.Task;
 import net.miginfocom.swing.MigLayout;
 import resources.Day;
+import resources.FileManager;
 import resources.TimeCounter;
-import javax.swing.JCheckBox;
 
 public class StudymeisterFONIS extends JFrame {
 
@@ -44,7 +39,7 @@ public class StudymeisterFONIS extends JFrame {
 
 	// Days
 	private LinkedList<Task> tasks = new LinkedList<Task>();
-	private boolean listWasLoaded = false;
+	// private boolean listWasLoaded = false;
 	private TimeCounter time = new TimeCounter(0);
 	private int currentDay = new GregorianCalendar().get(Calendar.DAY_OF_WEEK) - 1;
 	private Task currentTask;
@@ -89,7 +84,7 @@ public class StudymeisterFONIS extends JFrame {
 		JMenuItem mntmSave = new JMenuItem("Save");
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				save();
+				FileManager.saveTasks(tasks, new File("./tasks.json"));
 			}
 		});
 		mnFile.add(mntmSave);
@@ -97,7 +92,10 @@ public class StudymeisterFONIS extends JFrame {
 		JMenuItem mntmLoad = new JMenuItem("Load");
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				load();
+				if (new File("./tasks.json").isFile()) {
+					tasks = FileManager.loadTasks(new File("./tasks.json"));
+					listTasks();
+				}
 			}
 		});
 		mnFile.add(mntmLoad);
@@ -110,21 +108,22 @@ public class StudymeisterFONIS extends JFrame {
 			}
 		});
 		mnFile.add(mntmExit);
-		
+
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
-		
+
 		JMenuItem mntmOpenTaskEditor = new JMenuItem("Open task editor");
 		mntmOpenTaskEditor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TaskManager tm = new TaskManager(tasks, currentDay);
 				tm.setVisible(true);
-				while(tm.isVisible()){}
+				while (tm.isVisible()) {
+				}
 				listTasks();
 			}
 		});
 		mnEdit.add(mntmOpenTaskEditor);
-		
+
 		JMenuItem mntmOpenStatistics = new JMenuItem("Open statistics");
 		mntmOpenStatistics.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -184,7 +183,8 @@ public class StudymeisterFONIS extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				TaskAdder ta = new TaskAdder(tasks, currentDay);
 				ta.setVisible(true);
-				while(ta.isVisible()){}
+				while (ta.isVisible()) {
+				}
 				listTasks();
 			}
 		});
@@ -193,7 +193,7 @@ public class StudymeisterFONIS extends JFrame {
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		chckbxStudying = new JCheckBox("Studying");
 		chckbxStudying.setEnabled(false);
 		chckbxStudying.addActionListener(new ActionListener() {
@@ -239,7 +239,7 @@ public class StudymeisterFONIS extends JFrame {
 					if (!tasks.isEmpty()) {
 						currentTask = tasks.getFirst();
 						listTasks();
-					}else{
+					} else {
 						listTasks();
 					}
 				}
@@ -258,41 +258,41 @@ public class StudymeisterFONIS extends JFrame {
 
 	}
 
-	private void save() {
-		if (listWasLoaded || !(new File("tasks.out").isFile())) { // Counts
-																	// first
-																	// load as
-																	// well
-			try (ObjectOutputStream out = new ObjectOutputStream(
-					new BufferedOutputStream(new FileOutputStream("tasks.out")))) {
-				for (int i = 0; i < tasks.size(); i++) {
-					out.writeObject(tasks.get(i));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			// Displays a message you need to load the list first
-		}
-	}
+	// private void save() {
+	// if (listWasLoaded || !(new File("tasks.out").isFile())) { // Counts
+	// // first
+	// // load as
+	// // well
+	// try (ObjectOutputStream out = new ObjectOutputStream(
+	// new BufferedOutputStream(new FileOutputStream("tasks.out")))) {
+	// for (int i = 0; i < tasks.size(); i++) {
+	// out.writeObject(tasks.get(i));
+	// }
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// } else {
+	// // Displays a message you need to load the list first
+	// }
+	// }
 
-	private void load() {
-		if (new File("tasks.out").isFile()) { // Check if there is something to
-												// load
-			try (ObjectInputStream ois = new ObjectInputStream(
-					new BufferedInputStream(new FileInputStream("tasks.out")))) {
-				while (true) {
-					Task task = (Task) ois.readObject();
-					tasks.add(task);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			// Displays a message that no data about tasks was found.
-		}
-		listWasLoaded = true;
-	}
+	// private void load() {
+	// if (new File("tasks.out").isFile()) { // Check if there is something to
+	// // load
+	// try (ObjectInputStream ois = new ObjectInputStream(
+	// new BufferedInputStream(new FileInputStream("tasks.out")))) {
+	// while (true) {
+	// Task task = (Task) ois.readObject();
+	// tasks.add(task);
+	// }
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// } else {
+	// // Displays a message that no data about tasks was found.
+	// }
+	// listWasLoaded = true;
+	// }
 
 	private void listTasks() {
 		if (!tasks.isEmpty()) {
@@ -339,12 +339,12 @@ public class StudymeisterFONIS extends JFrame {
 		txtTotalPages.setText("" + currentTask.getTotalPages());
 		txtPagesDone.setText("" + currentTask.getPagesDone());
 	}
-	
-	private void studying(){
-		if(chckbxStudying.isSelected()){
+
+	private void studying() {
+		if (chckbxStudying.isSelected()) {
 			time.start();
 			btnFinishPage.setEnabled(true);
-		}else{
+		} else {
 			time.pause();
 			btnFinishPage.setEnabled(false);
 			Statistics.totalTime += time.getTotalTime();
