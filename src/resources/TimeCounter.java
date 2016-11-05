@@ -16,6 +16,7 @@ public class TimeCounter {
 	}
 	
 	public void start(){
+		pause();
 		this.startTime = System.currentTimeMillis();
 		this.isOn = true;
 	}
@@ -25,8 +26,6 @@ public class TimeCounter {
 			this.totalTime += System.currentTimeMillis() - startTime;
 			this.startTime = 0; //Double pause should be accounted for, this is not needed?
 			this.isOn = false;
-		}else{
-			//
 		}
 	}
 	

@@ -41,6 +41,7 @@ public class TaskAdder extends JDialog {
 				JButton okButton = new JButton("Done");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
+						setVisible(false);
 						dispose();
 					}
 				});
