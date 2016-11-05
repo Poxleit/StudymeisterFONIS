@@ -57,8 +57,6 @@ public class Task implements Serializable {
 	public void finishAPage() {
 		if (pagesDone < totalPages) {
 			pagesDone++;
-		} else {
-			System.out.println("Task has been finished!");
 		}
 	}
 

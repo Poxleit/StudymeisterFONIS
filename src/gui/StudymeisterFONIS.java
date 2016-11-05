@@ -110,6 +110,20 @@ public class StudymeisterFONIS extends JFrame {
 			}
 		});
 		mnFile.add(mntmExit);
+		
+		JMenu mnEdit = new JMenu("Edit");
+		menuBar.add(mnEdit);
+		
+		JMenuItem mntmOpenTaskEditor = new JMenuItem("Open task editor");
+		mntmOpenTaskEditor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TaskManager tm = new TaskManager(tasks, currentDay);
+				tm.setVisible(true);
+				while(tm.isVisible()){}
+				listTasks();
+			}
+		});
+		mnEdit.add(mntmOpenTaskEditor);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -176,15 +190,6 @@ public class StudymeisterFONIS extends JFrame {
 		chckbxStudying.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				studying();
-//				if(chckbxStudying.isSelected()){
-//					time.start();
-//					btnFinishPage.setEnabled(true);
-//				}else{
-//					time.pause();
-//					btnFinishPage.setEnabled(false);
-//					Statistics.totalTime += time.getTotalTime();
-//				}
-//				System.out.println(Statistics.totalTime + "\n" + Statistics.totalPages);
 			}
 		});
 		panel_1.add(chckbxStudying);
