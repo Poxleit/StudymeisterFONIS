@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import core.Statistics;
-import net.miginfocom.swing.MigLayout;
 
 public class OverallStatistics extends JDialog {
 
