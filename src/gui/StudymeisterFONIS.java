@@ -124,6 +124,15 @@ public class StudymeisterFONIS extends JFrame {
 			}
 		});
 		mnEdit.add(mntmOpenTaskEditor);
+		
+		JMenuItem mntmOpenStatistics = new JMenuItem("Open statistics");
+		mntmOpenStatistics.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				OverallStatistics os = new OverallStatistics();
+				os.setVisible(true);
+			}
+		});
+		mnEdit.add(mntmOpenStatistics);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
