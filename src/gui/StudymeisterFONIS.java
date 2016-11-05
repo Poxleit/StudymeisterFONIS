@@ -105,7 +105,7 @@ public class StudymeisterFONIS extends JFrame {
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Ask user to save, then exit
+				// save();
 				exit();
 			}
 		});
@@ -349,7 +349,6 @@ public class StudymeisterFONIS extends JFrame {
 			btnFinishPage.setEnabled(false);
 			Statistics.totalTime += time.getTotalTime();
 		}
-		System.out.println(Statistics.totalTime + "\n" + Statistics.totalPages);
 	}
 
 	private void exit() {

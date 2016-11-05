@@ -4,14 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class TaskConfirmation extends JDialog {
 	
@@ -43,8 +43,8 @@ public class TaskConfirmation extends JDialog {
 		txtTaskHasBeen.setHorizontalAlignment(SwingConstants.CENTER);
 		txtTaskHasBeen.setFont(new Font("Times New Roman", Font.PLAIN, 22));
 		txtTaskHasBeen.setEditable(false);
-		if(confirmation) txtTaskHasBeen.setText("TASK HAS BEEN ADDED!");
-		else txtTaskHasBeen.setText("TASK HAS NOT BEEN ADDED! CHECK FORMAT!");
+		if(confirmation) txtTaskHasBeen.setText("TASK HAS BEEN ADDED!\n"); //"It will take  you approx :" + totalPages / (Statistics.totalTime / 1000 / 60) + " minutes!");
+		else txtTaskHasBeen.setText("TASK HAS NOT BEEN ADDED! CHECK FORMAT!"); //Recode this line
 		getContentPane().add(txtTaskHasBeen, BorderLayout.CENTER);
 		txtTaskHasBeen.setColumns(10);
 		
