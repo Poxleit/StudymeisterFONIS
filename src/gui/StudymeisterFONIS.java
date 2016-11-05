@@ -35,6 +35,7 @@ import core.Task;
 import net.miginfocom.swing.MigLayout;
 import resources.Day;
 import resources.TimeCounter;
+import javax.swing.JCheckBox;
 
 public class StudymeisterFONIS extends JFrame {
 
@@ -162,20 +163,19 @@ public class StudymeisterFONIS extends JFrame {
 				listTasks();
 			}
 		});
-
-		// #TESTCODE , to be removed
-		JButton btnTest = new JButton("test");
-		btnTest.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				listTasks();
-			}
-		});
-		panel.add(btnTest, "cell 0 7");
 		panel.add(btnAddTask, "cell 0 8,alignx center,aligny center");
 
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JCheckBox chckbxStudying = new JCheckBox("Studying");
+		chckbxStudying.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		panel_1.add(chckbxStudying);
 
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);
