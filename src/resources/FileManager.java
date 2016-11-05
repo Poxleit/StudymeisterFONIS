@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.security.CodeSource;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import core.Task;
+import gui.StudymeisterFONIS;
 
 public class FileManager {
 	
@@ -122,4 +125,15 @@ public class FileManager {
        
         return null;
     }
+    
+    public static String getLocation(){
+		CodeSource codeSource = StudymeisterFONIS.class.getProtectionDomain().getCodeSource();
+		File launcher = null;
+		try {
+			launcher = new File(codeSource.getLocation().toURI().getPath());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return launcher.getParentFile().getPath();
+	}
 }
