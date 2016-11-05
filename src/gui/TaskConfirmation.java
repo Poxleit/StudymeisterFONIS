@@ -3,19 +3,22 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
-import java.awt.Font;
 import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TaskConfirmation extends JDialog {
+	
+	private static final long serialVersionUID = -3538632613068412342L;
 	private JTextField txtTaskHasBeen;
 
-	public TaskConfirmation() {
+	public TaskConfirmation(boolean confirmation) {
 		setTitle("Task added");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -25,6 +28,11 @@ public class TaskConfirmation extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -35,7 +43,8 @@ public class TaskConfirmation extends JDialog {
 		txtTaskHasBeen.setHorizontalAlignment(SwingConstants.CENTER);
 		txtTaskHasBeen.setFont(new Font("Times New Roman", Font.PLAIN, 22));
 		txtTaskHasBeen.setEditable(false);
-		txtTaskHasBeen.setText("TASK HAS BEEN ADDED!");
+		if(confirmation) txtTaskHasBeen.setText("TASK HAS BEEN ADDED!");
+		else txtTaskHasBeen.setText("TASK HAS NOT BEEN ADDED! CHECK FORMAT!");
 		getContentPane().add(txtTaskHasBeen, BorderLayout.CENTER);
 		txtTaskHasBeen.setColumns(10);
 		

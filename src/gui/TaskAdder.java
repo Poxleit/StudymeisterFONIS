@@ -38,6 +38,37 @@ public class TaskAdder extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Done");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+					}
+				});
+				{
+					JButton btnAddTask = new JButton("Add Task");
+					buttonPane.add(btnAddTask);
+					btnAddTask.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							//Task task = new Task(taskName, taskDescription, totalPages, taskDay);
+							String taskName = txtTaskName.getText();
+							String taskDescription = txtTaskDescription.getText();
+							int totalPages = Integer.parseInt(txtTotalPages.getText());
+							int taskDay = cbDays.getSelectedIndex();
+							try {
+								Task task = new Task(taskName, taskDescription, totalPages, taskDay);
+								tasks.add(task);
+								TaskConfirmation tc = new TaskConfirmation(true);
+								tc.setVisible(true);
+								clearFieds();
+							} catch (Exception e) {
+								//TODO : Give user notice if incorrect format
+//								TaskConfirmation tc = new TaskConfirmation(false);
+//								tc.setVisible(true);
+//								clearFieds();
+//								e.printStackTrace();
+							}
+						}
+					});
+				}
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -76,26 +107,6 @@ public class TaskAdder extends JDialog {
 					cbDays.addItem(Day.values()[i]);
 				}
 			}
-			{
-				JButton btnAddTask = new JButton("Add Task");
-				btnAddTask.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						//Task task = new Task(taskName, taskDescription, totalPages, taskDay);
-						String taskName = txtTaskName.getText();
-						String taskDescription = txtTaskDescription.getText();
-						int totalPages = Integer.parseInt(txtTotalPages.getText());
-						int taskDay = cbDays.getSelectedIndex();
-						try {
-							Task task = new Task(taskName, taskDescription, totalPages, taskDay);
-							tasks.add(task);
-							//TODO Add confirmation dialog
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
-				panel.add(btnAddTask, "cell 0 8,alignx center,aligny center");
-			}
 		}
 		{
 			JScrollPane scrollPane = new JScrollPane();
@@ -106,9 +117,17 @@ public class TaskAdder extends JDialog {
 			}
 			{
 				txtTaskDescription = new JTextArea();
+				txtTaskDescription.setLineWrap(true);
+				txtTaskDescription.setWrapStyleWord(true);
 				scrollPane.setViewportView(txtTaskDescription);
 			}
 		}
+	}
+	
+	private void clearFieds(){
+		txtTaskName.setText(null);
+		txtTaskDescription.setText(null);
+		txtTotalPages.setText(null);
 	}
 
 }

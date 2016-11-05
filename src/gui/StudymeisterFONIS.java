@@ -2,40 +2,38 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import core.Task;
 import net.miginfocom.swing.MigLayout;
 import resources.Day;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import java.awt.FlowLayout;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ComboBoxEditor;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 
 public class StudymeisterFONIS extends JFrame {
 
@@ -59,6 +57,7 @@ public class StudymeisterFONIS extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
 					StudymeisterFONIS frame = new StudymeisterFONIS();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -141,6 +140,15 @@ public class StudymeisterFONIS extends JFrame {
 		});
 		comboBoxTasks.setEnabled(false);
 		panel.add(comboBoxTasks, "cell 0 5,growx,aligny center");
+		
+		JButton btnAddTask = new JButton("Add Task");
+		btnAddTask.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TaskAdder ta = new TaskAdder(tasks);
+				ta.setVisible(true);
+			}
+		});
+		panel.add(btnAddTask, "cell 0 8,alignx center,aligny center");
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
