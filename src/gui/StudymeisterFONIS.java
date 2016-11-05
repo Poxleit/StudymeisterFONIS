@@ -85,6 +85,8 @@ public class StudymeisterFONIS extends JFrame {
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FileManager.saveTasks(tasks, new File(FileManager.getLocation()+"/tasks.json"));
+				Statistics.averageTime();
+				Statistics.saveStatistics();
 			}
 		});
 		mnFile.add(mntmSave);
@@ -94,6 +96,7 @@ public class StudymeisterFONIS extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (new File("./tasks.json").isFile()) {
 					tasks = FileManager.loadTasks(new File("./tasks.json"));
+					Statistics.loadStatistics();
 					listTasks();
 				}
 			}
@@ -231,10 +234,12 @@ public class StudymeisterFONIS extends JFrame {
 		btnFinishPage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				currentTask.finishAPage();
+				
 				Statistics.totalPages++;
 				txtPagesDone.setText("" + currentTask.getPagesDone());
 				if (currentTask.getPagesDone() == currentTask.getTotalPages()) {
 					// Display message and remove task from list
+					Statistics.totalTasks++;
 					tasks.remove(currentTask);
 					if (!tasks.isEmpty()) {
 						currentTask = tasks.getFirst();
@@ -352,6 +357,7 @@ public class StudymeisterFONIS extends JFrame {
 			time.pause();
 			btnFinishPage.setEnabled(false);
 			Statistics.totalTime += time.getTotalTime();
+			Statistics.averageTime();
 		}
 	}
 

@@ -22,7 +22,6 @@ import resources.Day;
 
 public class TaskAdder extends JDialog {
 
-	
 	private static final long serialVersionUID = 6719122565413781805L;
 	private JTextField txtTaskName;
 	private JTextField txtTotalPages;
@@ -54,16 +53,17 @@ public class TaskAdder extends JDialog {
 							String taskDescription = txtTaskDescription.getText();
 							int totalPages = Integer.parseInt(txtTotalPages.getText());
 							int taskDay = cbDays.getSelectedIndex();
-							//Test if the object already exists
+							// Test if the object already exists
 							boolean exists = false;
-							for(int i = 0; i < tasks.size(); i++){
-								if(tasks.get(i).getTaskName().equals(taskName)){
-									exists =  true;
+							for (int i = 0; i < tasks.size(); i++) {
+								if (tasks.get(i).getTaskName().equals(taskName)) {
+									exists = true;
 									return;
 								}
 							}
-							if(exists){
-								//Needs to display that the tasks already exists
+							if (exists) {
+								// Needs to display that the tasks already
+								// exists
 								return;
 							}
 							try {
@@ -73,11 +73,7 @@ public class TaskAdder extends JDialog {
 								tc.setVisible(true);
 								clearFieds();
 							} catch (Exception e) {
-								//TODO : Give user notice if incorrect format
-//								TaskConfirmation tc = new TaskConfirmation(false);
-//								tc.setVisible(true);
-//								clearFieds();
-//								e.printStackTrace();
+								System.out.println(0);
 							}
 						}
 					});
@@ -116,7 +112,7 @@ public class TaskAdder extends JDialog {
 			{
 				cbDays = new JComboBox<Day>();
 				panel.add(cbDays, "cell 0 5,growx");
-				for(int i = 0; i < 7; i++){
+				for (int i = 0; i < 7; i++) {
 					cbDays.addItem(Day.values()[i]);
 				}
 				cbDays.setSelectedIndex(currentDay);
@@ -134,13 +130,13 @@ public class TaskAdder extends JDialog {
 				txtTaskDescription.setLineWrap(true);
 				txtTaskDescription.setWrapStyleWord(true);
 				scrollPane.setViewportView(txtTaskDescription);
-				
+
 			}
 		}
 		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 	}
-	
-	private void clearFieds(){
+
+	private void clearFieds() {
 		txtTaskName.setText(null);
 		txtTaskDescription.setText(null);
 		txtTotalPages.setText(null);
